@@ -13,16 +13,20 @@ public class SlideObject : MonoBehaviour
     public float cutForce = 2000f;
 
 
-    public GameObject explosionVFX;
+    public GameObject explosionVFX_PC;
+    public GameObject explosionVFX_Quest;
     public AudioClip fruitCutSound;
     public AudioClip bombExplosionSound;
-    public GameObject fruitJuiceFXPrefab;
+    public GameObject fruitJuiceFX_PC;
+    public GameObject fruitJuiceFX_Quest;
 
 
     public string bombTag = "Bomb";
     public string startButtonTag = "StartButton";
     public GameObject gameManager;
 
+    private GameObject fruitJuiceFXPrefab;
+    private GameObject explosionVFX;
     private AudioSource audioSource;
 
     // Liste des objets deja coupes recemment
@@ -32,6 +36,14 @@ public class SlideObject : MonoBehaviour
     private void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
+
+        fruitJuiceFXPrefab = Application.platform == RuntimePlatform.Android
+        ? fruitJuiceFX_Quest
+        : fruitJuiceFX_PC;
+
+        explosionVFX = Application.platform == RuntimePlatform.Android
+        ? explosionVFX_Quest
+        : explosionVFX_PC;
 
         if (gameManager == null)
         {
@@ -128,9 +140,9 @@ public class SlideObject : MonoBehaviour
             {
                 var main = ps.main;
 
-                Renderer rend = target.GetComponent<Renderer>();
-                if (rend != null)
-                    main.startColor = rend.material.color;
+                FruitJuiceColor juice = target.GetComponent<FruitJuiceColor>();
+                if (juice != null)
+                    main.startColor = juice.juiceColor;
 
                 ps.Play();
             }

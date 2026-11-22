@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var rb in FindObjectsByType<Rigidbody>(FindObjectsSortMode.None))
         {
-            if (rb.CompareTag("Sliceable") || rb.CompareTag("Bomb"))
+            if ((rb.gameObject.layer == LayerMask.NameToLayer("Sliceable")) || rb.CompareTag("Bomb"))
                 Destroy(rb.gameObject);
         }
 
